@@ -4,12 +4,12 @@ library(dplyr)
 library(pheatmap)
 
 # Leer datos
-df <- read_excel("Analisis funcional-29-05-25.xlsx", sheet = "Sheet2")
+df <- read_excel("Analisis_funcional.xlsx", sheet = "Sheet2")
 
 # Crear BaseID
 df$BaseID <- gsub("_T[03]_H", "", df$`OTU ID`)
 
-# Convertir a data.frame clásico para evitar problemas de tibble
+# Convertir a data.frame (para evitar problemas de tibble)
 df <- as.data.frame(df)
 
 # Separar t0 y t1
@@ -27,7 +27,7 @@ t0 <- t0[match(t1$BaseID, t0$BaseID), ]
 delta <- t1[, func_cols] - t0[, func_cols]
 rownames(delta) <- t1$BaseID
 
-# Generar heatmap completo
+# Generar heatmap 
 pheatmap(as.matrix(delta),
          main = "Delta funcional (Fin - Inicio)",
          color = colorRampPalette(c("blue", "white", "red"))(100),
