@@ -16,10 +16,10 @@ install.packages("ggrepel")
 library(ggrepel)
 
 # Establecer el directorio de trabajo
-setwd("/Users/inesmaciasgamero/Desktop/MAster/TFM/Data")
+setwd("/Users/------/Desktop/MAster/TFM/Data")
 
 # Leer el archivo de datos
-data <- read_excel("Analisis funcional-29-05-25.xlsx", sheet = "Sheet2")
+data <- read_excel("Analisis_funcional.xlsx", sheet = "Sheet2")
 
 # Transformar a formato largo
 data_long <- data %>%
