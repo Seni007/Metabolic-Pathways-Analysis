@@ -5,7 +5,7 @@ library(pheatmap)
 library(vegan)
 
 # Establecer carpeta de salida
-setwd("/Users/inesmaciasgamero/Desktop/MAster/TFM/Data/output")
+setwd("/Users/-----/Desktop/MAster/TFM/Data/output")
 
 # --- PCA + PERMANOVA para log2FC > 0.58 ---
 
