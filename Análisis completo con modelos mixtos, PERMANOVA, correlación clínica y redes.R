@@ -8,7 +8,7 @@ install.packages(c(
 ))
 install.packages(c("readr", "dplyr", "ggplot2"))
 
-# Si quieres intentar SPIEC-EASI de nuevo, descomenta:
+# Si quieres intentar SPIEC-EASI, descomenta:
 # devtools::install_github("zdk123/SpiecEasi")
 # install.packages("SpiecEasi")
 
@@ -39,13 +39,13 @@ library(vegan)
 # 1. CARGAR DATOS
 # ========================
 # Rutas funcionales
-data_fun <- read_excel("Analisis funcional-29-05-25.xlsx", sheet = "Sheet2")
+data_fun <- read_excel("Analisis_funcional.xlsx", sheet = "Sheet2")
 
 # Variables clínicas
-clinica  <- read_sav("LACTOPREM JULIO 14_08_2024 pacientes definitivos.sav")
+clinica  <- read_sav("LACTOPREM_pacientes.sav")
 
 # Abundancias de géneros (o ASVs)
-abund_gen <- read_excel("DB_lactoprem_revJPD.xlsx", sheet = "DB")
+abund_gen <- read_excel("DB_lactoprem.xlsx", sheet = "DB")
 
 # Anotaciones funcionales (KEGG/MetaCyc)
 ruta_funcion <- read_csv("rutas_clasificadas_completo.csv")
@@ -81,7 +81,7 @@ library(lme4)
 # 1) Carga
 data_fun <- read_excel("Analisis funcional-29-05-25.xlsx", sheet = "Sheet2")
 
-# 2) Extrae sujeto y pivot_longer
+# 2) Extrar sujeto y pivot_longer
 data_long <- data_fun %>%
   mutate(
     Subject = sub("^LAC_(\\d+)_.*", "\\1", `OTU ID`)  # captura el número de neonato
@@ -100,7 +100,7 @@ data_long <- data_fun %>%
 
 glimpse(data_long)  # ahora debe tener 6 columnas: OTU ID, Subject, Treatment, Time, Ruta, Valor
 
-# 3) Ajusta modelos mixtos por ruta usando Subject como aleatorio
+# 3) Ajustr modelos mixtos por ruta usando Subject como aleatorio
 modelos_mixtos <- data_long %>%
   split(.$Ruta) %>%
   imap_dfr(function(df_ruta, ruta_id) {
@@ -119,7 +119,7 @@ modelos_mixtos <- data_long %>%
 
 glimpse(modelos_mixtos)  # ya debe verse term, estimate, std.error, etc.
 
-# 4) Filtra los términos de interés
+# 4) Filtrar los términos de interés
 efectos_fijos <- modelos_mixtos %>%
   filter(term %in% c(
     "TreatmentLactoferrina",
@@ -127,13 +127,13 @@ efectos_fijos <- modelos_mixtos %>%
     "TreatmentLactoferrina:TimeFin"
   ))
 
-# 5) Guarda resultados
+# 5) Guardar resultados
 write.csv(efectos_fijos,
           "resultados_modelo_mixto.csv",
           row.names = FALSE)
 
 #-------------------------------------------------------------------
-#Rutas significativos, distribución de coeficientes y volcano plot
+#Rutas significativas, distribución de coeficientes y volcano plot
 # 1) Leer resultados del modelo mixto
 
 df <- read_csv("resultados_modelo_mixto.csv")
@@ -205,7 +205,7 @@ ggsave("volcano_plot.png", width = 6, height = 4)
 # ========================
 # 4. AGRUPACIÓN FUNCIONAL
 # ========================
-# Comprueba nombres de columnas
+# Comprobar nombres de columnas
 print(names(ruta_funcion))
 
 # ==============================
@@ -318,10 +318,10 @@ print(permanova_gen)
 library(WGCNA)
 options(stringsAsFactors = FALSE)
 
-# 1) Prepara la matriz de expresión (cada fila = muestra, cada columna = ruta)
+# 1) Preparar la matriz de expresión (cada fila = muestra, cada columna = ruta)
 datExpr <- as.data.frame(ruta_scaled)
 
-# 2) Filtrado de muestras y rutas con NAs o varianza cero
+# 2) Filtrar de muestras y rutas con NAs o varianza cero
 gsg <- goodSamplesGenes(datExpr, verbose = 3)
 if (!gsg$allOK) {
   if (any(!gsg$goodGenes)) {
@@ -335,7 +335,7 @@ if (!gsg$allOK) {
   datExpr <- datExpr[gsg$goodSamples, gsg$goodGenes]
 }
 
-# 3) Asegura ejecución en un único hilo para reproducibilidad
+# 3) Asegurar ejecución en un único hilo para reproducibilidad
 if ("disableWGCNAThreads" %in% ls("package:WGCNA")) {
   disableWGCNAThreads()
 }
@@ -432,7 +432,6 @@ labeledHeatmap(Matrix      = moduleTraitCor,
 library(purrr)
 
 # Asegúrate de que en 'clinica' la columna de ID coincida con OTU_ID
-# p.ej. si se llama "ID":
 clinica2 <- clinica %>%
   rename(OTU_ID = ID)
 
