@@ -8,7 +8,7 @@ install.packages(c(
 ))
 install.packages(c("readr", "dplyr", "ggplot2"))
 
-# Si quieres intentar SPIEC-EASI, descomenta:
+# Para usar SPIEC-EASI, descomenta:
 # devtools::install_github("zdk123/SpiecEasi")
 # install.packages("SpiecEasi")
 
