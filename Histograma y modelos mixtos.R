@@ -1,5 +1,5 @@
 # Directorio de trabajo
-setwd("/Users/inesmaciasgamero/Desktop/MAster/TFM/Data")
+setwd("/Users/---/Desktop/Master/TFM/Data")
 
 # Cargar librerías
 library(readxl)
